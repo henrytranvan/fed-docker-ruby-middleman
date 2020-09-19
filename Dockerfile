@@ -1,6 +1,6 @@
 # Dockerfile
 
-FROM ruby:2.3.3
+FROM ruby:2.6.3
 
 LABEL maintainer="Deloitte Digital Team"
 LABEL version="1.0.1"
@@ -22,7 +22,24 @@ RUN apt-get -yqq update && \
         libpq-dev \
 		apt-utils \
         supervisor \
+        openssh-client \
         nano
+
+
+# Install ssh server.
+RUN apt-get update && apt-get install -y openssh-server
+RUN mkdir /var/run/sshd
+RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+# SSH login fix. Otherwise user is kicked off after login
+RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+ENV NOTVISIBLE "in users profile"
+RUN echo "export VISIBLE=now" >> /etc/profile
+
+# ADD ssh keys needed for connections to external servers
+RUN mkdir -p $HOME/.ssh
+VOLUME [ "$HOME/.ssh" ]
+RUN echo "    IdentityFile $HOME/.ssh/id_rsa" >> /etc/ssh/ssh_config
+
 
 # install nodejs 
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
@@ -33,7 +50,7 @@ RUN apt-get install -y nodejs
 COPY Gemfile Gemfile.lock package.json package-lock.json ./
 
 # Install dependencies
-RUN gem install bundler -v 1.17.0
+RUN gem install bundler -v 2.1.4
 RUN bundle install --without debug
 
 USER root
