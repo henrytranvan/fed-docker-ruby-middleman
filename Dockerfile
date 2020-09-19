@@ -90,4 +90,5 @@ CMD ["/bin/bash", "-c", "$HOME/startup.sh"]
 # Expose web root as volume
 VOLUME ["/home/docker/sites"]
 
-EXPOSE 4567
+# Expose some ports to the host system (web server, ssh, Xdebug)
+EXPOSE 22 4567
