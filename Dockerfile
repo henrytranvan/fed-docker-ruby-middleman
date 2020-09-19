@@ -91,4 +91,4 @@ CMD ["/bin/bash", "-c", "$HOME/startup.sh"]
 VOLUME ["/home/docker/sites"]
 
 # Expose some ports to the host system (web server, ssh, Xdebug)
-EXPOSE 22 4567
+EXPOSE 22 4455
