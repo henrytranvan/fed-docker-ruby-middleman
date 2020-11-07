@@ -6,9 +6,13 @@ LABEL maintainer="Deloitte Digital Team"
 LABEL version="1.0.1"
 LABEL description="Deloitte base image including Ubuntu, PHP, Apache"
 
+ENV DEBIAN_FRONTEND noninteractive
+ENV NODE_VERSION "8.11 8.12"
+ENV DEFAULT_NODE_VERSION 8.12
+
 
 # Add the docker user
-ENV HOME /home/docker
+ocker
 RUN useradd docker && passwd -d docker && adduser docker sudo
 RUN mkdir -p $HOME && chown -R docker:docker $HOME
 

@@ -1,0 +1,13 @@
+version: '3.7'
+
+services:
+  web:
+    build: .
+    volumes:
+      - '.:/home/docker/sites'
+    ports:
+      - '4567:4567'
+    tty: true
+    stdin_open: true
+    user: docker
+    restart: always
